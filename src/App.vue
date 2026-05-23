@@ -401,7 +401,7 @@ const stack = [
               <div class="relative h-5 mb-1">
                 <div class="flex gap-1">
                   <div
-                    v-for="(week, wi) in weeks"
+                    v-for="(_, wi) in weeks"
                     :key="wi"
                     class="w-3 shrink-0 relative"
                   >
