@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { Github, Linkedin, Mail, ArrowRight, Clock, ExternalLink } from 'lucide-vue-next'
 
-const fullText = "I build tools\nthat feel effortless."
+const fullText = "Full-stack developer.\nI build things that work."
 const displayed = ref('')
 const cursorOn = ref(true)
 
@@ -33,14 +33,24 @@ onMounted(() => {
 })
 
 // Lightbox
-const lightboxImg = ref<{ src: string; title: string } | null>(null)
+const lightboxImg = ref<{ srcs: string[]; idx: number; title: string } | null>(null)
 
-function openLightbox(src: string, title: string) {
-  lightboxImg.value = { src, title }
+function openLightbox(srcs: string[], title: string) {
+  lightboxImg.value = { srcs, idx: 0, title }
 }
 
 function closeLightbox() {
   lightboxImg.value = null
+}
+
+function lightboxNext() {
+  if (lightboxImg.value)
+    lightboxImg.value.idx = (lightboxImg.value.idx + 1) % lightboxImg.value.srcs.length
+}
+
+function lightboxPrev() {
+  if (lightboxImg.value)
+    lightboxImg.value.idx = (lightboxImg.value.idx - 1 + lightboxImg.value.srcs.length) % lightboxImg.value.srcs.length
 }
 
 onMounted(() => {
@@ -134,56 +144,68 @@ const projects = [
     tech: ['C#', 'CS2', 'CounterStrikeSharp'],
     url: 'https://github.com/imkaiwhyask/cs2-WeaponPaints',
   },
+  {
+    title: 'crest',
+    desc: 'Centralized digital workflow for customer master data requests — from submission and multi-level approval to SAP account creation.',
+    tech: ['Laravel', 'Blade', 'Alpine.js', 'Tailwind CSS'],
+    url: 'https://github.com/imkaiwhyask/crest',
+  },
 ]
 
 const clientWork = [
   {
+    title: 'CREST',
+    desc: 'Centralized digital workflow for customer master data requests — from submission and multi-level approval to SAP account creation.',
+    tech: ['Laravel', 'Blade', 'Alpine.js', 'Tailwind CSS'],
+    imgs: ['/work/portfolio_9.png', '/work/portfolio_9.1.png'],
+  },
+  {
     title: 'SlashPlug',
     desc: 'News and entertainment media website.',
     tech: ['WordPress', 'Elementor'],
-    img: '/work/portfolio_1.jpg',
+    imgs: ['/work/portfolio_1.jpg'],
   },
   {
     title: 'The Cross Country Immigration',
     desc: 'Immigration consultancy and services website.',
     tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
-    img: '/work/portfolio_2.jpg',
+    imgs: ['/work/portfolio_2.jpg'],
   },
   {
     title: 'Global Management',
     desc: 'Corporate website for a creative solutions provider.',
     tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
-    img: '/work/portfolio_3.jpg',
+    imgs: ['/work/portfolio_3.jpg'],
   },
   {
     title: 'ACB IT Solutions',
     desc: 'Managed IT solutions and outsourcing company website.',
     tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
-    img: '/work/portfolio_4.jpg',
+    imgs: ['/work/portfolio_4.jpg'],
   },
   {
     title: 'ifamous Technology',
     desc: 'Technology company website with featured services showcase.',
     tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
-    img: '/work/portfolio_5.jpg',
+    imgs: ['/work/portfolio_5.jpg'],
   },
   {
     title: 'Advance Technology H.K.',
     desc: 'Web design and software development company based in Hong Kong.',
     tech: ['Blade', 'PHP', 'CSS'],
-    img: '/work/portfolio_6.jpg',
+    imgs: ['/work/portfolio_6.jpg'],
   },
   {
     title: 'Orbweavers',
     desc: 'Business solutions company website.',
     tech: ['WordPress', 'Elementor'],
-    img: '/work/portfolio_7.jpg',
+    imgs: ['/work/portfolio_7.jpg'],
   },
   {
     title: 'Solid Pick IT Solutions',
     desc: 'IT solutions and services company website.',
     tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
-    img: '/work/portfolio_8.jpg',
+    imgs: ['/work/portfolio_8.jpg'],
   },
 ]
 
@@ -432,8 +454,8 @@ const stack = [
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
           class="mb-10"
         >
-          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// freelance</p>
-          <h2 class="text-3xl font-bold tracking-tighter">Client Work</h2>
+          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// projects</p>
+          <h2 class="text-3xl font-bold tracking-tighter">Shipped Projects</h2>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -448,10 +470,10 @@ const stack = [
             <!-- Screenshot -->
             <div
               class="relative h-36 overflow-hidden bg-zinc-800 cursor-zoom-in"
-              @click="openLightbox(client.img, client.title)"
+              @click="openLightbox(client.imgs, client.title)"
             >
               <img
-                :src="client.img"
+                :src="client.imgs[0]"
                 :alt="client.title"
                 class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
@@ -645,11 +667,21 @@ const stack = [
               class="absolute -top-10 right-0 font-mono text-xs text-zinc-500 hover:text-white transition-colors"
             >esc / close ×</button>
             <img
-              :src="lightboxImg.src"
+              :src="lightboxImg.srcs[lightboxImg.idx]"
               :alt="lightboxImg.title"
               class="w-full rounded-xl shadow-2xl border border-zinc-800"
             />
-            <p class="mt-3 font-mono text-xs text-zinc-500 text-center">{{ lightboxImg.title }}</p>
+            <div class="mt-3 flex items-center justify-center gap-4">
+              <p class="font-mono text-xs text-zinc-500">{{ lightboxImg.title }}</p>
+              <template v-if="lightboxImg.srcs.length > 1">
+                <span class="font-mono text-xs text-zinc-600">·</span>
+                <div class="flex items-center gap-2">
+                  <button @click="lightboxPrev" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">← prev</button>
+                  <span class="font-mono text-xs text-zinc-600">{{ lightboxImg.idx + 1 }} / {{ lightboxImg.srcs.length }}</span>
+                  <button @click="lightboxNext" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">next →</button>
+                </div>
+              </template>
+            </div>
           </div>
         </div>
       </Transition>
