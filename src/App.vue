@@ -158,8 +158,8 @@ const projects = [
   },
   {
     title: 'helpIT',
-    desc: 'Full-stack IT ticketing system for managing and resolving internal support requests.',
-    tech: ['Vue 3', 'Pinia', 'Element Plus', 'Node.js', 'Express', 'Prisma', 'PostgreSQL'],
+    desc: 'Full-stack IT helpdesk system — ticket management, SLA tracking, role-based access (Admin / Technician / End User), self-service portal and knowledge base.',
+    tech: ['Vue 3', 'Pinia', 'Element Plus', 'ApexCharts', 'Node.js', 'Express', 'Prisma', 'PostgreSQL', 'Docker'],
     url: 'https://github.com/imkaiwhyask/helpIT',
   },
 ]
@@ -230,7 +230,7 @@ const clientWork = [
 const stack = [
   {
     category: 'Frontend',
-    items: ['HTML5', 'CSS3', 'JavaScript', 'Vue.js', 'Bootstrap', 'Blade'],
+    items: ['HTML5', 'CSS3', 'JavaScript', 'Vue.js', 'Bootstrap', 'Blade', 'ApexCharts'],
   },
   {
     category: 'Backend / Apps',
@@ -246,7 +246,7 @@ const stack = [
   },
   {
     category: 'Containers & DevOps',
-    items: ['Docker', 'Nginx', 'Git', 'GitHub Actions'],
+    items: ['Docker', 'Nginx', 'Git', 'GitHub Actions', 'GitLab CI'],
   },
 ]
 </script>
