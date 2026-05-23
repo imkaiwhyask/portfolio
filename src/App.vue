@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { Github, Linkedin, Mail, ArrowRight, Clock, ExternalLink } from 'lucide-vue-next'
 
 const fullText = "I build tools\nthat feel effortless."
@@ -30,6 +30,64 @@ onMounted(() => {
     clearInterval(typeTimer)
     clearInterval(blinkTimer)
   })
+})
+
+// GitHub activity
+type Contribution = { date: string; count: number; level: number }
+const allContributions = ref<Record<string, Contribution[]>>({})
+const totals = ref<Record<string, number>>({})
+const selectedYear = ref(new Date().getFullYear().toString())
+const activityLoading = ref(true)
+
+const availableYears = computed(() =>
+  Object.keys(totals.value).sort((a, b) => Number(b) - Number(a))
+)
+
+const contributions = computed(() => allContributions.value[selectedYear.value] ?? [])
+
+const weeks = computed(() => {
+  const result: Contribution[][] = []
+  for (let i = 0; i < contributions.value.length; i += 7) {
+    result.push(contributions.value.slice(i, i + 7))
+  }
+  return result
+})
+
+const monthLabels = computed(() => {
+  const labels: { label: string; col: number }[] = []
+  let lastMonth = ''
+  contributions.value.forEach((d, i) => {
+    const month = new Date(d.date).toLocaleString('en', { month: 'short' })
+    if (month !== lastMonth) {
+      labels.push({ label: month, col: Math.floor(i / 7) })
+      lastMonth = month
+    }
+  })
+  return labels
+})
+
+function levelColor(level: number): string {
+  return ['bg-zinc-800/50', 'bg-cyan-950', 'bg-cyan-800/60', 'bg-cyan-500/70', 'bg-cyan-400'][level] ?? 'bg-zinc-800/50'
+}
+
+onMounted(async () => {
+  try {
+    const res = await fetch('https://github-contributions-api.jogruber.de/v4/imkaiwhyask?y=all')
+    const data = await res.json()
+    totals.value = data.total ?? {}
+    const grouped: Record<string, Contribution[]> = {}
+    for (const c of data.contributions as Contribution[]) {
+      const year = c.date.slice(0, 4)
+      if (!grouped[year]) grouped[year] = []
+      grouped[year].push(c)
+    }
+    allContributions.value = grouped
+    selectedYear.value = new Date().getFullYear().toString()
+  } catch {
+    // silently fail — section stays hidden
+  } finally {
+    activityLoading.value = false
+  }
 })
 
 const projects = [
@@ -295,15 +353,107 @@ const stack = [
       </div>
     </section>
 
+    <!-- GitHub Activity -->
+    <section class="border-t border-zinc-900 py-20 px-6">
+      <div class="max-w-5xl mx-auto">
+        <div
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+          class="mb-8"
+        >
+          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// activity</p>
+          <h2 class="text-3xl font-bold tracking-tighter">GitHub Contributions</h2>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="activityLoading" class="h-28 flex items-center">
+          <span class="font-mono text-xs text-zinc-600 animate-pulse">fetching activity...</span>
+        </div>
+
+        <div
+          v-else-if="availableYears.length"
+          v-motion
+          :initial="{ opacity: 0 }"
+          :visible="{ opacity: 1, transition: { duration: 800 } }"
+        >
+          <!-- Year tabs + total -->
+          <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <div class="flex gap-1.5 flex-wrap">
+              <button
+                v-for="year in availableYears"
+                :key="year"
+                @click="selectedYear = year"
+                :class="selectedYear === year
+                  ? 'border-cyan-400/60 text-cyan-400 bg-cyan-400/5'
+                  : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'"
+                class="px-3 py-1 rounded-lg border font-mono text-xs transition-all duration-200"
+              >{{ year }}</button>
+            </div>
+            <span v-if="totals[selectedYear]" class="font-mono text-xs text-zinc-500">
+              {{ totals[selectedYear].toLocaleString() }} contributions
+            </span>
+          </div>
+
+          <!-- Month labels -->
+          <div class="overflow-x-auto">
+            <div class="min-w-max">
+              <div class="relative h-5 mb-1">
+                <div class="flex gap-1">
+                  <div
+                    v-for="(week, wi) in weeks"
+                    :key="wi"
+                    class="w-3 shrink-0 relative"
+                  >
+                    <span
+                      v-if="monthLabels.find(m => m.col === wi)"
+                      class="absolute left-0 font-mono text-[10px] text-zinc-600 whitespace-nowrap"
+                    >{{ monthLabels.find(m => m.col === wi)?.label }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Heatmap grid -->
+              <div class="flex gap-1 pb-3">
+                <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col gap-1">
+                  <div
+                    v-for="day in week"
+                    :key="day.date"
+                    :class="levelColor(day.level)"
+                    class="w-3 h-3 rounded-sm transition-opacity duration-150 hover:opacity-60 cursor-default"
+                    :title="`${day.date} — ${day.count} contribution${day.count !== 1 ? 's' : ''}`"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="flex items-center justify-end gap-1.5 mt-1">
+            <span class="font-mono text-[10px] text-zinc-600">less</span>
+            <div v-for="l in [0, 1, 2, 3, 4]" :key="l" :class="levelColor(l)" class="w-3 h-3 rounded-sm" />
+            <span class="font-mono text-[10px] text-zinc-600">more</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section id="contact" class="border-t border-zinc-900 py-28 px-6">
+      <div class="max-w-5xl mx-auto">
+        <p
+          v-motion
+          :initial="{ opacity: 0, y: 40 }"
+          :visible="{ opacity: 1, y: 0, transition: { duration: 700 } }"
+          class="font-mono text-xs text-cyan-400 tracking-widest mb-4"
+        >// contact</p>
+      </div>
       <div
         v-motion
         :initial="{ opacity: 0, y: 40 }"
         :visible="{ opacity: 1, y: 0, transition: { duration: 700 } }"
         class="max-w-3xl mx-auto text-center"
       >
-        <p class="font-mono text-xs text-cyan-400 tracking-widest mb-4">// contact</p>
         <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-6">
           Let's build<br />something great.
         </h2>
