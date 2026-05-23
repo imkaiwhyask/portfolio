@@ -597,9 +597,8 @@ const stack = [
           >
             <Github class="w-4 h-4" /> GitHub
           </a>
-          <!-- Update this href with your LinkedIn profile URL -->
           <a
-            href="https://linkedin.com/in/"
+            href="https://www.linkedin.com/in/patrick-angelo-saba-01477b195/"
             target="_blank"
             class="inline-flex items-center gap-2 px-6 py-3 border border-zinc-700 rounded-xl text-zinc-400 hover:border-zinc-500 hover:text-white transition-all duration-200 text-sm"
           >
@@ -621,9 +620,8 @@ const stack = [
           >
             <Github class="w-3.5 h-3.5" />
           </a>
-          <!-- Update this href with your LinkedIn profile URL -->
           <a
-            href="https://linkedin.com/in/"
+            href="https://www.linkedin.com/in/patrick-angelo-saba-01477b195/"
             target="_blank"
             class="hover:text-zinc-400 transition-colors duration-200"
           >
