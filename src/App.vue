@@ -59,10 +59,27 @@ const projects = [
   },
 ]
 
-const skills = [
-  'Laravel', 'PHP', 'Docker', 'MySQL',
-  'Nginx', 'Linux', 'WordPress', 'Git',
-  'Microsoft 365', 'Vue.js',
+const stack = [
+  {
+    category: 'Frontend',
+    items: ['HTML5', 'CSS3', 'JavaScript', 'Vue.js', 'Bootstrap'],
+  },
+  {
+    category: 'Backend / Apps',
+    items: ['Laravel', 'PHP', 'Python', 'MySQL', 'Electron', 'Dash'],
+  },
+  {
+    category: 'CMS / No-Code',
+    items: ['WordPress', 'Elementor', 'WooCommerce', 'Power Apps', 'Power Automate'],
+  },
+  {
+    category: 'Infra & Systems',
+    items: ['Linux', 'Windows Server', 'Active Directory', 'Microsoft 365', 'Microsoft Entra', 'VMware', 'FortiGate', 'Wazuh', 'Grafana'],
+  },
+  {
+    category: 'Containers & DevOps',
+    items: ['Docker', 'Nginx', 'Git', 'GitHub Actions'],
+  },
 ]
 </script>
 
@@ -178,26 +195,31 @@ const skills = [
           v-motion
           :initial="{ opacity: 0, y: 30 }"
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
-          class="mb-10"
+          class="mb-12"
         >
           <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// stack</p>
           <h2 class="text-3xl font-bold tracking-tighter">What I work with</h2>
         </div>
 
-        <div class="flex flex-wrap gap-2">
+        <div class="space-y-8">
           <div
-            v-for="(skill, i) in skills"
-            :key="skill"
+            v-for="(group, gi) in stack"
+            :key="group.category"
             v-motion
-            :initial="{ opacity: 0, scale: 0.85 }"
-            :visible="{
-              opacity: 1,
-              scale: 1,
-              transition: { delay: i * 65, duration: 400 },
-            }"
-            class="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg font-mono text-sm text-zinc-300 hover:border-cyan-400/60 hover:text-cyan-400 hover:bg-zinc-800/80 transition-all duration-200 cursor-default"
+            :initial="{ opacity: 0, y: 20 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: gi * 80 } }"
           >
-            {{ skill }}
+            <p class="font-mono text-xs text-zinc-600 tracking-widest uppercase mb-3">{{ group.category }}</p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="(item, ii) in group.items"
+                :key="item"
+                v-motion
+                :initial="{ opacity: 0, scale: 0.88 }"
+                :visible="{ opacity: 1, scale: 1, transition: { delay: gi * 80 + ii * 45, duration: 350 } }"
+                class="px-3.5 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg font-mono text-sm text-zinc-300 hover:border-cyan-400/60 hover:text-cyan-400 hover:bg-zinc-800/80 transition-all duration-200 cursor-default"
+              >{{ item }}</span>
+            </div>
           </div>
         </div>
       </div>
