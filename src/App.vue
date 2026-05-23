@@ -153,7 +153,7 @@ const projects = [
   {
     title: 'helpIT',
     desc: 'Full-stack IT ticketing system for managing and resolving internal support requests.',
-    tech: ['Vue 3', 'Node.js', 'Express', 'SQLite'],
+    tech: ['Vue 3', 'Pinia', 'Element Plus', 'Node.js', 'Express', 'Prisma', 'PostgreSQL'],
     url: 'https://github.com/imkaiwhyask/helpIT',
   },
 ]
