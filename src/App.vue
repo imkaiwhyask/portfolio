@@ -32,6 +32,25 @@ onMounted(() => {
   })
 })
 
+// Lightbox
+const lightboxImg = ref<{ src: string; title: string } | null>(null)
+
+function openLightbox(src: string, title: string) {
+  lightboxImg.value = { src, title }
+}
+
+function closeLightbox() {
+  lightboxImg.value = null
+}
+
+onMounted(() => {
+  const handleKey = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') closeLightbox()
+  }
+  window.addEventListener('keydown', handleKey)
+  onUnmounted(() => window.removeEventListener('keydown', handleKey))
+})
+
 // GitHub activity
 type Contribution = { date: string; count: number; level: number }
 const allContributions = ref<Record<string, Contribution[]>>({})
@@ -114,6 +133,57 @@ const projects = [
     desc: 'Custom weapon skin configuration plugin for Counter-Strike 2 servers.',
     tech: ['C#', 'CS2', 'CounterStrikeSharp'],
     url: 'https://github.com/imkaiwhyask/cs2-WeaponPaints',
+  },
+]
+
+const clientWork = [
+  {
+    title: 'SlashPlug',
+    desc: 'News and entertainment media website.',
+    tech: ['WordPress', 'Elementor'],
+    img: '/work/portfolio_1.jpg',
+  },
+  {
+    title: 'The Cross Country Immigration',
+    desc: 'Immigration consultancy and services website.',
+    tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
+    img: '/work/portfolio_2.jpg',
+  },
+  {
+    title: 'Global Management',
+    desc: 'Corporate website for a creative solutions provider.',
+    tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
+    img: '/work/portfolio_3.jpg',
+  },
+  {
+    title: 'ACB IT Solutions',
+    desc: 'Managed IT solutions and outsourcing company website.',
+    tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
+    img: '/work/portfolio_4.jpg',
+  },
+  {
+    title: 'ifamous Technology',
+    desc: 'Technology company website with featured services showcase.',
+    tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
+    img: '/work/portfolio_5.jpg',
+  },
+  {
+    title: 'Advance Technology H.K.',
+    desc: 'Web design and software development company based in Hong Kong.',
+    tech: ['Blade', 'PHP', 'CSS'],
+    img: '/work/portfolio_6.jpg',
+  },
+  {
+    title: 'Orbweavers',
+    desc: 'Business solutions company website.',
+    tech: ['WordPress', 'Elementor'],
+    img: '/work/portfolio_7.jpg',
+  },
+  {
+    title: 'Solid Pick IT Solutions',
+    desc: 'IT solutions and services company website.',
+    tech: ['PHP', 'SCSS', 'CSS', 'Less', 'HTML', 'JavaScript'],
+    img: '/work/portfolio_8.jpg',
   },
 ]
 
@@ -353,6 +423,58 @@ const stack = [
       </div>
     </section>
 
+    <!-- Freelance / Client Work -->
+    <section class="border-t border-zinc-900 py-28 px-6">
+      <div class="max-w-5xl mx-auto">
+        <div
+          v-motion
+          :initial="{ opacity: 0, y: 30 }"
+          :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
+          class="mb-10"
+        >
+          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// freelance</p>
+          <h2 class="text-3xl font-bold tracking-tighter">Client Work</h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div
+            v-for="(client, i) in clientWork"
+            :key="client.title"
+            v-motion
+            :initial="{ opacity: 0, y: 24 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: i * 60 } }"
+            class="group bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <!-- Screenshot -->
+            <div
+              class="relative h-36 overflow-hidden bg-zinc-800 cursor-zoom-in"
+              @click="openLightbox(client.img, client.title)"
+            >
+              <img
+                :src="client.img"
+                :alt="client.title"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 bg-zinc-950/20 group-hover:bg-zinc-950/0 transition-colors duration-300" />
+            </div>
+
+            <!-- Info -->
+            <div class="p-4">
+              <h3 class="font-semibold text-sm tracking-tight mb-1.5">{{ client.title }}</h3>
+              <p class="text-zinc-500 text-xs leading-relaxed mb-3">{{ client.desc }}</p>
+              <div class="flex flex-wrap gap-1">
+                <span
+                  v-for="tech in client.tech"
+                  :key="tech"
+                  class="px-2 py-0.5 bg-zinc-950 border border-zinc-800 rounded font-mono text-[10px] text-zinc-600"
+                >{{ tech }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- GitHub Activity -->
     <section class="border-t border-zinc-900 py-20 px-6">
       <div class="max-w-5xl mx-auto">
@@ -511,5 +633,40 @@ const stack = [
       </div>
     </footer>
 
+    <!-- Lightbox -->
+    <Teleport to="body">
+      <Transition name="lightbox">
+        <div
+          v-if="lightboxImg"
+          class="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/90 backdrop-blur-sm p-4"
+          @click.self="closeLightbox"
+        >
+          <div class="relative max-w-5xl w-full">
+            <button
+              @click="closeLightbox"
+              class="absolute -top-10 right-0 font-mono text-xs text-zinc-500 hover:text-white transition-colors"
+            >esc / close ×</button>
+            <img
+              :src="lightboxImg.src"
+              :alt="lightboxImg.title"
+              class="w-full rounded-xl shadow-2xl border border-zinc-800"
+            />
+            <p class="mt-3 font-mono text-xs text-zinc-500 text-center">{{ lightboxImg.title }}</p>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
   </main>
 </template>
+
+<style>
+.lightbox-enter-active,
+.lightbox-leave-active {
+  transition: opacity 0.2s ease;
+}
+.lightbox-enter-from,
+.lightbox-leave-to {
+  opacity: 0;
+}
+</style>
