@@ -62,7 +62,7 @@ const projects = [
 const stack = [
   {
     category: 'Frontend',
-    items: ['HTML5', 'CSS3', 'JavaScript', 'Vue.js', 'Bootstrap'],
+    items: ['HTML5', 'CSS3', 'JavaScript', 'Vue.js', 'Bootstrap', 'Blade'],
   },
   {
     category: 'Backend / Apps',
