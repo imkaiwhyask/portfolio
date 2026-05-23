@@ -2,42 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 * {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Roboto', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: #0F0F1A;
 }
 
 .font-mono {
   font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
-/* Subtle grid lines for hero background */
+/* Subtle purple grid for hero */
 .grid-bg {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-
-/* Radial gradient to fade the grid edges toward the center */
-.radial-mask {
-  background: radial-gradient(ellipse 90% 85% at 50% 40%, transparent 20%, #09090b 75%);
-}
-
-/* Cyan glow orb behind the hero text */
-.hero-glow {
-  background: radial-gradient(ellipse 70% 50% at 30% 60%, rgba(34, 211, 238, 0.055) 0%, transparent 65%);
-}
-
-/* Subtle glow at the bottom of the coming soon card */
-.coming-soon-glow {
-  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(34, 211, 238, 0.06) 0%, transparent 65%);
+    linear-gradient(to right, rgba(187, 134, 252, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(187, 134, 252, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 /* Custom scrollbar */
@@ -45,12 +31,12 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #0F0F1A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #2E2E4A;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: rgba(187, 134, 252, 0.3);
 }

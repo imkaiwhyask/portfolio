@@ -96,7 +96,13 @@ const monthLabels = computed(() => {
 })
 
 function levelColor(level: number): string {
-  return ['bg-zinc-800/50', 'bg-cyan-950', 'bg-cyan-800/60', 'bg-cyan-500/70', 'bg-cyan-400'][level] ?? 'bg-zinc-800/50'
+  return [
+    'bg-md-surface-variant/50',
+    'bg-[#3D1A6E]',
+    'bg-[#6B32B5]/70',
+    'bg-md-primary/70',
+    'bg-md-primary',
+  ][level] ?? 'bg-md-surface-variant/50'
 }
 
 onMounted(async () => {
@@ -246,51 +252,43 @@ const stack = [
 </script>
 
 <template>
-  <main class="min-h-screen bg-zinc-950 text-white overflow-x-hidden">
+  <main class="min-h-screen bg-md-bg text-md-on-bg overflow-x-hidden">
 
-    <!-- Nav -->
-    <nav class="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl">
-      <div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-16">
-        <span class="font-mono text-sm select-none">
-          <span class="text-cyan-400">imkaiwhyask</span>
-        </span>
-        <div class="flex items-center gap-8 text-sm text-zinc-500">
-          <a href="#about" class="hover:text-white transition-colors duration-200">About</a>
-          <a href="#skills" class="hover:text-white transition-colors duration-200">Skills</a>
-          <a href="#work" class="hover:text-white transition-colors duration-200">Work</a>
-          <a
-            href="#contact"
-            class="px-4 py-1.5 border border-zinc-700 rounded-lg text-zinc-400 hover:border-cyan-400 hover:text-cyan-400 transition-all duration-200 font-mono text-xs"
-          >
-            contact
-          </a>
+    <!-- Material App Bar -->
+    <nav class="fixed inset-x-0 top-0 z-50 bg-md-surface/95 backdrop-blur-xl shadow-elevation-2">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 flex justify-between items-center h-16">
+        <span class="font-mono text-sm font-medium text-md-primary select-none">imkaiwhyask</span>
+        <div class="flex items-center gap-1">
+          <a href="#about" class="px-4 py-2 text-sm font-medium text-md-on-surface hover:text-md-primary hover:bg-md-primary/8 rounded-full transition-all duration-200">About</a>
+          <a href="#skills" class="px-4 py-2 text-sm font-medium text-md-on-surface hover:text-md-primary hover:bg-md-primary/8 rounded-full transition-all duration-200">Skills</a>
+          <a href="#work" class="px-4 py-2 text-sm font-medium text-md-on-surface hover:text-md-primary hover:bg-md-primary/8 rounded-full transition-all duration-200">Work</a>
+          <a href="#contact" class="ml-2 px-5 py-2 bg-md-primary/15 text-md-primary text-sm font-medium rounded-full hover:bg-md-primary/25 transition-all duration-200">Contact</a>
         </div>
       </div>
     </nav>
 
     <!-- Hero -->
-    <section class="relative min-h-dvh flex items-center px-6 pt-16">
+    <section class="relative min-h-dvh flex items-center px-6 pt-16 bg-md-bg overflow-hidden">
       <div class="absolute inset-0 grid-bg pointer-events-none" />
-      <div class="absolute inset-0 hero-glow pointer-events-none" />
-      <div class="absolute inset-0 radial-mask pointer-events-none" />
+      <div class="absolute top-1/3 -right-40 w-[500px] h-[500px] rounded-full bg-md-primary/6 blur-[100px] pointer-events-none" />
+      <div class="absolute bottom-0 -left-20 w-96 h-96 rounded-full bg-md-secondary/5 blur-[80px] pointer-events-none" />
 
-      <div class="relative z-10 max-w-5xl mx-auto w-full">
-        <!-- Status badge -->
+      <div class="relative z-10 max-w-5xl mx-auto w-full py-20">
+        <!-- Status chip -->
         <div
           v-motion
           :initial="{ opacity: 0, y: -8 }"
           :enter="{ opacity: 1, y: 0, transition: { duration: 600 } }"
-          class="inline-flex items-center gap-2 mb-10 px-3 py-1.5 bg-zinc-900/80 border border-zinc-800 rounded-full"
+          class="inline-flex items-center gap-2 mb-10 px-4 py-1.5 bg-md-surface shadow-elevation-1 rounded-full border border-md-outline/20"
         >
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span class="font-mono text-xs text-zinc-400">available for work</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span class="text-xs font-medium text-md-on-surface">available for work</span>
         </div>
 
-        <!-- Typewriter headline -->
-        <h1
-          class="text-6xl md:text-[84px] font-bold tracking-tighter leading-[1.05] mb-8 whitespace-pre-line"
-        >{{ displayed }}<span
-            class="text-cyan-400 transition-opacity duration-75 select-none"
+        <!-- Display headline -->
+        <h1 class="text-5xl md:text-[80px] font-light tracking-tight leading-[1.1] mb-8 whitespace-pre-line">
+          {{ displayed }}<span
+            class="text-md-primary transition-opacity duration-75 select-none"
             :class="cursorOn ? 'opacity-100' : 'opacity-0'"
           >|</span>
         </h1>
@@ -299,7 +297,7 @@ const stack = [
           v-motion
           :initial="{ opacity: 0, y: 14 }"
           :enter="{ opacity: 1, y: 0, transition: { delay: 2700, duration: 700 } }"
-          class="text-lg text-zinc-400 max-w-lg mb-10 leading-relaxed"
+          class="text-lg text-md-on-surface max-w-lg mb-10 leading-relaxed"
         >
           Full-stack developer &amp; systems engineer. I design and ship reliable internal tools — from APIs to infrastructure.
         </p>
@@ -312,14 +310,14 @@ const stack = [
         >
           <a
             href="#work"
-            class="group inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-cyan-400 transition-colors duration-200 text-sm"
+            class="group inline-flex items-center gap-2 px-7 py-3 bg-md-primary text-zinc-900 font-medium rounded-full shadow-elevation-2 hover:shadow-elevation-3 transition-all duration-200 text-sm"
           >
             See My Work
             <ArrowRight class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
           </a>
           <a
             href="#contact"
-            class="inline-flex items-center px-6 py-3 border border-zinc-700 rounded-xl text-zinc-400 hover:border-zinc-500 hover:text-white transition-all duration-200 text-sm"
+            class="inline-flex items-center px-7 py-3 border border-md-outline text-md-primary rounded-full hover:bg-md-primary/8 transition-all duration-200 text-sm font-medium"
           >
             Get in Touch
           </a>
@@ -328,30 +326,35 @@ const stack = [
     </section>
 
     <!-- About -->
-    <section id="about" class="py-28 px-6">
+    <section id="about" class="py-24 px-6 bg-md-bg">
       <div
         v-motion
         :initial="{ opacity: 0, y: 40 }"
         :visible="{ opacity: 1, y: 0, transition: { duration: 700 } }"
         class="max-w-5xl mx-auto"
       >
-        <p class="font-mono text-xs text-cyan-400 tracking-widest mb-4">// about</p>
-        <h2 class="text-4xl md:text-6xl font-bold tracking-tighter leading-tight mb-10">
-          I turn complexity<br />into clarity.
-        </h2>
-        <div class="grid md:grid-cols-2 gap-8 text-zinc-400 leading-relaxed">
-          <p>
-            I build full-stack applications and manage infrastructure. My focus is creating internal tools that are reliable, simple, and actually used by people.
-          </p>
-          <p>
-            I enjoy solving real problems — whether it's approval systems, ticketing platforms, or improving workflows through clean code and solid architecture.
-          </p>
+        <div class="bg-md-surface shadow-elevation-2 rounded-3xl p-8 md:p-12">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="h-8 w-1 bg-md-primary rounded-full" />
+            <p class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase">// about</p>
+          </div>
+          <h2 class="text-4xl md:text-5xl font-light tracking-tight leading-tight mb-8">
+            I turn complexity<br />into clarity.
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8 text-md-on-surface leading-relaxed">
+            <p>
+              I build full-stack applications and manage infrastructure. My focus is creating internal tools that are reliable, simple, and actually used by people.
+            </p>
+            <p>
+              I enjoy solving real problems — whether it's approval systems, ticketing platforms, or improving workflows through clean code and solid architecture.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Skills -->
-    <section id="skills" class="border-y border-zinc-900 py-20 px-6">
+    <section id="skills" class="py-24 px-6 bg-md-surface">
       <div class="max-w-5xl mx-auto">
         <div
           v-motion
@@ -359,8 +362,8 @@ const stack = [
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
           class="mb-12"
         >
-          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// stack</p>
-          <h2 class="text-3xl font-bold tracking-tighter">What I work with</h2>
+          <p class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase mb-2">// stack</p>
+          <h2 class="text-3xl font-light tracking-tight">What I work with</h2>
         </div>
 
         <div class="space-y-8">
@@ -371,7 +374,7 @@ const stack = [
             :initial="{ opacity: 0, y: 20 }"
             :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: gi * 80 } }"
           >
-            <p class="font-mono text-xs text-zinc-600 tracking-widest uppercase mb-3">{{ group.category }}</p>
+            <p class="text-xs font-medium text-md-on-surface/50 tracking-[0.12em] uppercase mb-3">{{ group.category }}</p>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="(item, ii) in group.items"
@@ -379,7 +382,7 @@ const stack = [
                 v-motion
                 :initial="{ opacity: 0, scale: 0.88 }"
                 :visible="{ opacity: 1, scale: 1, transition: { delay: gi * 80 + ii * 45, duration: 350 } }"
-                class="px-3.5 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg font-mono text-sm text-zinc-300 hover:border-cyan-400/60 hover:text-cyan-400 hover:bg-zinc-800/80 transition-all duration-200 cursor-default"
+                class="px-4 py-1.5 bg-md-bg border border-md-outline/30 rounded-full font-mono text-sm text-md-on-surface hover:border-md-primary/60 hover:text-md-primary hover:bg-md-primary/5 transition-all duration-200 cursor-default"
               >{{ item }}</span>
             </div>
           </div>
@@ -387,8 +390,8 @@ const stack = [
       </div>
     </section>
 
-    <!-- Work -->
-    <section id="work" class="py-28 px-6">
+    <!-- Work (Selected Projects) -->
+    <section id="work" class="py-24 px-6 bg-md-bg">
       <div class="max-w-5xl mx-auto">
         <div
           v-motion
@@ -397,15 +400,15 @@ const stack = [
           class="flex items-end justify-between mb-10"
         >
           <div>
-            <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// work</p>
-            <h2 class="text-3xl font-bold tracking-tighter">Selected Projects</h2>
+            <p class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase mb-2">// work</p>
+            <h2 class="text-3xl font-light tracking-tight">Selected Projects</h2>
           </div>
           <a
             href="https://github.com/imkaiwhyask"
             target="_blank"
-            class="inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500 hover:text-white transition-colors duration-200"
+            class="inline-flex items-center gap-1.5 text-sm text-md-on-surface/50 hover:text-md-primary transition-colors duration-200"
           >
-            <Github class="w-3.5 h-3.5" /> github
+            <Github class="w-4 h-4" /> github
           </a>
         </div>
 
@@ -416,49 +419,50 @@ const stack = [
             v-motion
             :initial="{ opacity: 0, y: 30 }"
             :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: i * 80 } }"
-            class="group relative bg-zinc-900 border border-zinc-800 rounded-2xl p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5"
+            class="group bg-md-surface shadow-elevation-1 hover:shadow-elevation-3 rounded-2xl overflow-hidden transition-all duration-300"
           >
-            <div class="flex items-start justify-between mb-4">
-              <h3 class="font-mono font-semibold text-lg tracking-tight">{{ project.title }}</h3>
-              <a
-                :href="project.url"
-                target="_blank"
-                class="text-zinc-600 group-hover:text-cyan-400 transition-colors duration-200 shrink-0 ml-3"
-              >
-                <ExternalLink class="w-4 h-4" />
-              </a>
-            </div>
-            <p class="text-zinc-400 text-sm leading-relaxed mb-6">{{ project.desc }}</p>
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-for="tech in project.tech"
-                :key="tech"
-                class="px-2.5 py-1 bg-zinc-950 border border-zinc-800 rounded-md font-mono text-xs text-zinc-500"
-              >{{ tech }}</span>
+            <div class="h-0.5 w-full bg-gradient-to-r from-md-primary via-md-primary/50 to-md-secondary" />
+            <div class="p-7">
+              <div class="flex items-start justify-between mb-4">
+                <h3 class="font-mono font-medium text-lg tracking-tight">{{ project.title }}</h3>
+                <a
+                  :href="project.url"
+                  target="_blank"
+                  class="text-md-on-surface/40 group-hover:text-md-primary transition-colors duration-200 shrink-0 ml-3"
+                >
+                  <ExternalLink class="w-4 h-4" />
+                </a>
+              </div>
+              <p class="text-md-on-surface text-sm leading-relaxed mb-6">{{ project.desc }}</p>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="tech in project.tech"
+                  :key="tech"
+                  class="px-3 py-1 bg-md-primary/10 text-md-primary rounded-full font-mono text-xs font-medium"
+                >{{ tech }}</span>
+              </div>
             </div>
           </div>
 
-          <!-- More coming soon -->
+          <!-- More coming -->
           <div
             v-motion
             :initial="{ opacity: 0, y: 30 }"
             :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: projects.length * 80 } }"
-            class="relative border border-zinc-800 border-dashed rounded-2xl p-7 flex flex-col items-center justify-center text-center min-h-[180px]"
+            class="border-2 border-dashed border-md-outline/25 rounded-2xl p-7 flex flex-col items-center justify-center text-center min-h-[180px]"
           >
-            <div class="coming-soon-glow absolute inset-0 rounded-2xl pointer-events-none" />
-            <div class="relative z-10">
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 border border-zinc-800 rounded-full bg-zinc-900/60 font-mono text-xs text-zinc-600">
-                <Clock class="w-3 h-3" /> more coming
-              </div>
-              <p class="text-zinc-600 text-sm">Cleaning up more repos.<br />Check back soon.</p>
+            <div class="w-10 h-10 rounded-full bg-md-surface flex items-center justify-center mb-3 shadow-elevation-1">
+              <Clock class="w-4 h-4 text-md-on-surface/40" />
             </div>
+            <p class="text-sm font-medium text-md-on-surface/40 mb-1">More coming</p>
+            <p class="text-xs text-md-on-surface/25">Cleaning up more repos.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Freelance / Client Work -->
-    <section class="border-t border-zinc-900 py-28 px-6">
+    <!-- Shipped Projects -->
+    <section class="py-24 px-6 bg-md-surface">
       <div class="max-w-5xl mx-auto">
         <div
           v-motion
@@ -466,8 +470,8 @@ const stack = [
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
           class="mb-10"
         >
-          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// projects</p>
-          <h2 class="text-3xl font-bold tracking-tighter">Shipped Projects</h2>
+          <p class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase mb-2">// projects</p>
+          <h2 class="text-3xl font-light tracking-tight">Shipped Projects</h2>
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -477,30 +481,28 @@ const stack = [
             v-motion
             :initial="{ opacity: 0, y: 24 }"
             :visible="{ opacity: 1, y: 0, transition: { duration: 500, delay: i * 60 } }"
-            class="group bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5"
+            class="group bg-md-bg shadow-elevation-1 hover:shadow-elevation-3 rounded-2xl overflow-hidden transition-all duration-300 cursor-zoom-in"
+            @click="openLightbox(client.imgs, client.title)"
           >
-            <!-- Screenshot -->
-            <div
-              class="relative h-36 overflow-hidden bg-zinc-800 cursor-zoom-in"
-              @click="openLightbox(client.imgs, client.title)"
-            >
+            <div class="relative h-40 overflow-hidden bg-md-surface-variant">
               <img
                 :src="client.imgs[0]"
                 :alt="client.title"
                 class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-              <div class="absolute inset-0 bg-zinc-950/20 group-hover:bg-zinc-950/0 transition-colors duration-300" />
+              <div class="absolute inset-0 bg-md-bg/20 group-hover:bg-transparent transition-colors duration-300" />
+              <div v-if="client.imgs.length > 1" class="absolute top-2 right-2 px-2 py-0.5 bg-md-bg/75 backdrop-blur-sm rounded-full font-mono text-[9px] text-md-on-surface/70">
+                1/{{ client.imgs.length }}
+              </div>
             </div>
-
-            <!-- Info -->
             <div class="p-4">
-              <h3 class="font-semibold text-sm tracking-tight mb-1.5">{{ client.title }}</h3>
-              <p class="text-zinc-500 text-xs leading-relaxed mb-3">{{ client.desc }}</p>
+              <h3 class="font-medium text-sm mb-1.5">{{ client.title }}</h3>
+              <p class="text-md-on-surface text-xs leading-relaxed mb-3">{{ client.desc }}</p>
               <div class="flex flex-wrap gap-1">
                 <span
                   v-for="tech in client.tech"
                   :key="tech"
-                  class="px-2 py-0.5 bg-zinc-950 border border-zinc-800 rounded font-mono text-[10px] text-zinc-600"
+                  class="px-2.5 py-0.5 bg-md-surface rounded-full text-[10px] font-medium text-md-on-surface/60"
                 >{{ tech }}</span>
               </div>
             </div>
@@ -510,7 +512,7 @@ const stack = [
     </section>
 
     <!-- GitHub Activity -->
-    <section class="border-t border-zinc-900 py-20 px-6">
+    <section class="py-20 px-6 bg-md-bg">
       <div class="max-w-5xl mx-auto">
         <div
           v-motion
@@ -518,13 +520,12 @@ const stack = [
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
           class="mb-8"
         >
-          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// activity</p>
-          <h2 class="text-3xl font-bold tracking-tighter">GitHub Contributions</h2>
+          <p class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase mb-2">// activity</p>
+          <h2 class="text-3xl font-light tracking-tight">GitHub Contributions</h2>
         </div>
 
-        <!-- Loading -->
         <div v-if="activityLoading" class="h-28 flex items-center">
-          <span class="font-mono text-xs text-zinc-600 animate-pulse">fetching activity...</span>
+          <span class="font-mono text-xs text-md-on-surface/30 animate-pulse">fetching activity...</span>
         </div>
 
         <div
@@ -532,8 +533,8 @@ const stack = [
           v-motion
           :initial="{ opacity: 0 }"
           :visible="{ opacity: 1, transition: { duration: 800 } }"
+          class="bg-md-surface shadow-elevation-2 rounded-2xl p-6"
         >
-          <!-- Year tabs + total -->
           <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
             <div class="flex gap-1.5 flex-wrap">
               <button
@@ -541,35 +542,28 @@ const stack = [
                 :key="year"
                 @click="selectedYear = year"
                 :class="selectedYear === year
-                  ? 'border-cyan-400/60 text-cyan-400 bg-cyan-400/5'
-                  : 'border-zinc-800 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300'"
-                class="px-3 py-1 rounded-lg border font-mono text-xs transition-all duration-200"
+                  ? 'bg-md-primary/15 text-md-primary border-md-primary/40'
+                  : 'border-md-outline/30 text-md-on-surface/50 hover:border-md-outline/60 hover:text-md-on-surface'"
+                class="px-3 py-1 rounded-full border text-xs font-medium transition-all duration-200"
               >{{ year }}</button>
             </div>
-            <span v-if="totals[selectedYear]" class="font-mono text-xs text-zinc-500">
+            <span v-if="totals[selectedYear]" class="font-mono text-xs text-md-on-surface/50">
               {{ totals[selectedYear].toLocaleString() }} contributions
             </span>
           </div>
 
-          <!-- Month labels -->
           <div class="overflow-x-auto">
             <div class="min-w-max">
               <div class="relative h-5 mb-1">
                 <div class="flex gap-1">
-                  <div
-                    v-for="(_, wi) in weeks"
-                    :key="wi"
-                    class="w-3 shrink-0 relative"
-                  >
+                  <div v-for="(_, wi) in weeks" :key="wi" class="w-3 shrink-0 relative">
                     <span
                       v-if="monthLabels.find(m => m.col === wi)"
-                      class="absolute left-0 font-mono text-[10px] text-zinc-600 whitespace-nowrap"
+                      class="absolute left-0 font-mono text-[10px] text-md-on-surface/30 whitespace-nowrap"
                     >{{ monthLabels.find(m => m.col === wi)?.label }}</span>
                   </div>
                 </div>
               </div>
-
-              <!-- Heatmap grid -->
               <div class="flex gap-1 pb-3">
                 <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col gap-1">
                   <div
@@ -584,24 +578,23 @@ const stack = [
             </div>
           </div>
 
-          <!-- Legend -->
           <div class="flex items-center justify-end gap-1.5 mt-1">
-            <span class="font-mono text-[10px] text-zinc-600">less</span>
+            <span class="font-mono text-[10px] text-md-on-surface/30">less</span>
             <div v-for="l in [0, 1, 2, 3, 4]" :key="l" :class="levelColor(l)" class="w-3 h-3 rounded-sm" />
-            <span class="font-mono text-[10px] text-zinc-600">more</span>
+            <span class="font-mono text-[10px] text-md-on-surface/30">more</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="border-t border-zinc-900 py-28 px-6">
+    <section id="contact" class="py-28 px-6 bg-md-surface">
       <div class="max-w-5xl mx-auto">
         <p
           v-motion
           :initial="{ opacity: 0, y: 40 }"
           :visible="{ opacity: 1, y: 0, transition: { duration: 700 } }"
-          class="font-mono text-xs text-cyan-400 tracking-widest mb-4"
+          class="font-mono text-xs text-md-secondary tracking-[0.15em] uppercase mb-4"
         >// contact</p>
       </div>
       <div
@@ -610,31 +603,31 @@ const stack = [
         :visible="{ opacity: 1, y: 0, transition: { duration: 700 } }"
         class="max-w-3xl mx-auto text-center"
       >
-        <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-6">
+        <h2 class="text-4xl md:text-6xl font-light tracking-tight mb-6">
           Let's build<br />something great.
         </h2>
-        <p class="text-zinc-400 mb-10 leading-relaxed">
+        <p class="text-md-on-surface mb-10 leading-relaxed">
           Open to freelance, contracts, and interesting problems.
         </p>
 
         <div class="flex justify-center flex-wrap gap-3">
           <a
             href="mailto:kaiangelo017@gmail.com"
-            class="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-cyan-400 transition-colors duration-200 text-sm"
+            class="inline-flex items-center gap-2 px-7 py-3 bg-md-primary text-zinc-900 font-medium rounded-full shadow-elevation-2 hover:shadow-elevation-3 transition-all duration-200 text-sm"
           >
             <Mail class="w-4 h-4" /> Email Me
           </a>
           <a
             href="https://github.com/imkaiwhyask"
             target="_blank"
-            class="inline-flex items-center gap-2 px-6 py-3 border border-zinc-700 rounded-xl text-zinc-400 hover:border-zinc-500 hover:text-white transition-all duration-200 text-sm"
+            class="inline-flex items-center gap-2 px-7 py-3 border border-md-outline text-md-on-surface rounded-full hover:bg-md-surface-variant transition-all duration-200 text-sm font-medium"
           >
             <Github class="w-4 h-4" /> GitHub
           </a>
           <a
             href="https://www.linkedin.com/in/patrick-angelo-saba-01477b195/"
             target="_blank"
-            class="inline-flex items-center gap-2 px-6 py-3 border border-zinc-700 rounded-xl text-zinc-400 hover:border-zinc-500 hover:text-white transition-all duration-200 text-sm"
+            class="inline-flex items-center gap-2 px-7 py-3 border border-md-outline text-md-on-surface rounded-full hover:bg-md-surface-variant transition-all duration-200 text-sm font-medium"
           >
             <Linkedin class="w-4 h-4" /> LinkedIn
           </a>
@@ -643,56 +636,44 @@ const stack = [
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-900 py-8 px-6">
-      <div class="max-w-5xl mx-auto flex items-center justify-between font-mono text-xs text-zinc-600">
+    <footer class="bg-md-bg border-t border-md-outline/15 py-6 px-6">
+      <div class="max-w-5xl mx-auto flex items-center justify-between font-mono text-xs text-md-on-surface/40">
         <span>© 2026 kai</span>
         <div class="flex items-center gap-4">
-          <a
-            href="https://github.com/imkaiwhyask"
-            target="_blank"
-            class="hover:text-zinc-400 transition-colors duration-200"
-          >
+          <a href="https://github.com/imkaiwhyask" target="_blank" class="hover:text-md-primary transition-colors duration-200">
             <Github class="w-3.5 h-3.5" />
           </a>
-          <a
-            href="https://www.linkedin.com/in/patrick-angelo-saba-01477b195/"
-            target="_blank"
-            class="hover:text-zinc-400 transition-colors duration-200"
-          >
+          <a href="https://www.linkedin.com/in/patrick-angelo-saba-01477b195/" target="_blank" class="hover:text-md-primary transition-colors duration-200">
             <Linkedin class="w-3.5 h-3.5" />
           </a>
         </div>
       </div>
     </footer>
 
-    <!-- Lightbox -->
+    <!-- Lightbox (Material Dialog) -->
     <Teleport to="body">
       <Transition name="lightbox">
         <div
           v-if="lightboxImg"
-          class="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/90 backdrop-blur-sm p-4"
+          class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
           @click.self="closeLightbox"
         >
-          <div class="relative max-w-5xl w-full">
-            <button
-              @click="closeLightbox"
-              class="absolute -top-10 right-0 font-mono text-xs text-zinc-500 hover:text-white transition-colors"
-            >esc / close ×</button>
+          <div class="relative max-w-5xl w-full bg-md-surface shadow-elevation-5 rounded-3xl overflow-hidden">
             <img
               :src="lightboxImg.srcs[lightboxImg.idx]"
               :alt="lightboxImg.title"
-              class="w-full rounded-xl shadow-2xl border border-zinc-800"
+              class="w-full"
             />
-            <div class="mt-3 flex items-center justify-center gap-4">
-              <p class="font-mono text-xs text-zinc-500">{{ lightboxImg.title }}</p>
+            <div class="px-5 py-4 flex items-center justify-between gap-4">
+              <p class="font-mono text-xs text-md-on-surface/60 truncate">{{ lightboxImg.title }}</p>
               <template v-if="lightboxImg.srcs.length > 1">
-                <span class="font-mono text-xs text-zinc-600">·</span>
-                <div class="flex items-center gap-2">
-                  <button @click="lightboxPrev" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">← prev</button>
-                  <span class="font-mono text-xs text-zinc-600">{{ lightboxImg.idx + 1 }} / {{ lightboxImg.srcs.length }}</span>
-                  <button @click="lightboxNext" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">next →</button>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button @click="lightboxPrev" class="px-4 py-1.5 rounded-full border border-md-outline/40 text-xs font-medium text-md-on-surface hover:bg-md-surface-variant transition-all">← prev</button>
+                  <span class="font-mono text-xs text-md-on-surface/40 min-w-[40px] text-center">{{ lightboxImg.idx + 1 }} / {{ lightboxImg.srcs.length }}</span>
+                  <button @click="lightboxNext" class="px-4 py-1.5 rounded-full border border-md-outline/40 text-xs font-medium text-md-on-surface hover:bg-md-surface-variant transition-all">next →</button>
                 </div>
               </template>
+              <button @click="closeLightbox" class="shrink-0 text-xs font-medium text-md-on-surface/40 hover:text-md-on-surface transition-colors">close ×</button>
             </div>
           </div>
         </div>
