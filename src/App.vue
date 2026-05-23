@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Github, Linkedin, Mail, ArrowRight, Clock } from 'lucide-vue-next'
+import { Github, Linkedin, Mail, ArrowRight, Clock, ExternalLink } from 'lucide-vue-next'
 
 const fullText = "I build tools\nthat feel effortless."
 const displayed = ref('')
@@ -31,6 +31,33 @@ onMounted(() => {
     clearInterval(blinkTimer)
   })
 })
+
+const projects = [
+  {
+    title: 'trackIT',
+    desc: 'Asset management and inventory tracking system built for internal operations.',
+    tech: ['PHP', 'Laravel', 'MySQL'],
+    url: 'https://github.com/imkaiwhyask/trackIT',
+  },
+  {
+    title: 'phantix',
+    desc: 'Internal messaging desktop app for team communication.',
+    tech: ['Electron', 'PHP', 'MySQL'],
+    url: 'https://github.com/imkaiwhyask/phantix',
+  },
+  {
+    title: 'CS2-Tags',
+    desc: 'Counter-Strike 2 server plugin for adding and managing custom player tags in-game.',
+    tech: ['C#', 'CS2', 'CounterStrikeSharp'],
+    url: 'https://github.com/imkaiwhyask/CS2-Tags',
+  },
+  {
+    title: 'cs2-WeaponPaints',
+    desc: 'Custom weapon skin configuration plugin for Counter-Strike 2 servers.',
+    tech: ['C#', 'CS2', 'CounterStrikeSharp'],
+    url: 'https://github.com/imkaiwhyask/cs2-WeaponPaints',
+  },
+]
 
 const skills = [
   'Laravel', 'PHP', 'Docker', 'MySQL',
@@ -176,43 +203,71 @@ const skills = [
       </div>
     </section>
 
-    <!-- Work / Coming Soon -->
+    <!-- Work -->
     <section id="work" class="py-28 px-6">
       <div class="max-w-5xl mx-auto">
         <div
           v-motion
           :initial="{ opacity: 0, y: 30 }"
           :visible="{ opacity: 1, y: 0, transition: { duration: 600 } }"
-          class="mb-10"
+          class="flex items-end justify-between mb-10"
         >
-          <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// work</p>
-          <h2 class="text-3xl font-bold tracking-tighter">Selected Projects</h2>
+          <div>
+            <p class="font-mono text-xs text-cyan-400 tracking-widest mb-2">// work</p>
+            <h2 class="text-3xl font-bold tracking-tighter">Selected Projects</h2>
+          </div>
+          <a
+            href="https://github.com/imkaiwhyask"
+            target="_blank"
+            class="inline-flex items-center gap-1.5 font-mono text-xs text-zinc-500 hover:text-white transition-colors duration-200"
+          >
+            <Github class="w-3.5 h-3.5" /> github
+          </a>
         </div>
 
-        <div
-          v-motion
-          :initial="{ opacity: 0, y: 30 }"
-          :visible="{ opacity: 1, y: 0, transition: { duration: 700, delay: 100 } }"
-          class="relative rounded-2xl border border-zinc-800 overflow-hidden"
-        >
-          <div class="coming-soon-glow absolute inset-0 pointer-events-none" />
-          <div class="relative z-10 flex flex-col items-center justify-center py-24 px-8 text-center">
-            <div
-              class="inline-flex items-center gap-1.5 px-3 py-1 mb-6 border border-zinc-800 rounded-full bg-zinc-900/80 font-mono text-xs text-zinc-500"
-            >
-              <Clock class="w-3 h-3" /> preparing
+        <div class="grid md:grid-cols-2 gap-4">
+          <div
+            v-for="(project, i) in projects"
+            :key="project.title"
+            v-motion
+            :initial="{ opacity: 0, y: 30 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: i * 80 } }"
+            class="group relative bg-zinc-900 border border-zinc-800 rounded-2xl p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <div class="flex items-start justify-between mb-4">
+              <h3 class="font-mono font-semibold text-lg tracking-tight">{{ project.title }}</h3>
+              <a
+                :href="project.url"
+                target="_blank"
+                class="text-zinc-600 group-hover:text-cyan-400 transition-colors duration-200 shrink-0 ml-3"
+              >
+                <ExternalLink class="w-4 h-4" />
+              </a>
             </div>
-            <h3 class="text-xl font-bold tracking-tight mb-3">Projects coming soon</h3>
-            <p class="text-zinc-500 max-w-sm text-sm leading-relaxed">
-              Most of my work is for private clients. I'm preparing case studies and cleaning up repos — check back soon.
-            </p>
-            <a
-              href="https://github.com/imkaiwhyask"
-              target="_blank"
-              class="inline-flex items-center gap-2 mt-8 font-mono text-xs text-zinc-600 hover:text-white transition-colors duration-200"
-            >
-              <Github class="w-3.5 h-3.5" /> github.com/imkaiwhyask
-            </a>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-6">{{ project.desc }}</p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="tech in project.tech"
+                :key="tech"
+                class="px-2.5 py-1 bg-zinc-950 border border-zinc-800 rounded-md font-mono text-xs text-zinc-500"
+              >{{ tech }}</span>
+            </div>
+          </div>
+
+          <!-- More coming soon -->
+          <div
+            v-motion
+            :initial="{ opacity: 0, y: 30 }"
+            :visible="{ opacity: 1, y: 0, transition: { duration: 600, delay: projects.length * 80 } }"
+            class="relative border border-zinc-800 border-dashed rounded-2xl p-7 flex flex-col items-center justify-center text-center min-h-[180px]"
+          >
+            <div class="coming-soon-glow absolute inset-0 rounded-2xl pointer-events-none" />
+            <div class="relative z-10">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 mb-3 border border-zinc-800 rounded-full bg-zinc-900/60 font-mono text-xs text-zinc-600">
+                <Clock class="w-3 h-3" /> more coming
+              </div>
+              <p class="text-zinc-600 text-sm">Cleaning up more repos.<br />Check back soon.</p>
+            </div>
           </div>
         </div>
       </div>
