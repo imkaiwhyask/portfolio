@@ -160,6 +160,12 @@ const clientWork = [
     imgs: ['/work/portfolio_9.png', '/work/portfolio_9.1.png'],
   },
   {
+    title: 'trackIT',
+    desc: 'Asset management and inventory tracking system built for internal operations.',
+    tech: ['PHP', 'Laravel', 'MySQL'],
+    imgs: ['/work/portfolio_10.png', '/work/portfolio_10.1.png'],
+  },
+  {
     title: 'SlashPlug',
     desc: 'News and entertainment media website.',
     tech: ['WordPress', 'Elementor'],
