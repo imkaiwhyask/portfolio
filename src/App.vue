@@ -22,14 +22,14 @@ function closeLightbox() {
   lightboxImg.value = null;
 }
 function lightboxNext() {
-  if (lightboxImg.value)
-    lightboxImg.value.idx = (lightboxImg.value.idx + 1) % lightboxImg.value.srcs.length;
+  if (!lightboxImg.value) return;
+  const { srcs, title, idx } = lightboxImg.value;
+  lightboxImg.value = { srcs, title, idx: (idx + 1) % srcs.length };
 }
 function lightboxPrev() {
-  if (lightboxImg.value)
-    lightboxImg.value.idx =
-      (lightboxImg.value.idx - 1 + lightboxImg.value.srcs.length) %
-      lightboxImg.value.srcs.length;
+  if (!lightboxImg.value) return;
+  const { srcs, title, idx } = lightboxImg.value;
+  lightboxImg.value = { srcs, title, idx: (idx - 1 + srcs.length) % srcs.length };
 }
 function handleKey(e: KeyboardEvent) {
   if (e.key === "Escape") closeLightbox();
@@ -842,6 +842,7 @@ onUnmounted(() => {
       >
         <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl">
           <img
+            :key="lightboxImg.idx"
             :src="lightboxImg.srcs[lightboxImg.idx]"
             :alt="lightboxImg.title"
             class="w-full"
