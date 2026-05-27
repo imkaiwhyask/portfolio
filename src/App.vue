@@ -13,7 +13,9 @@ const cursorDot = ref<HTMLElement | null>(null);
 const cursorRing = ref<HTMLElement | null>(null);
 
 // ── Lightbox ───────────────────────────────────────────────────────────────
-const lightboxImg = ref<{ srcs: string[]; idx: number; title: string } | null>(null);
+const lightboxImg = ref<{ srcs: string[]; idx: number; title: string } | null>(
+  null,
+);
 
 function openLightbox(srcs: string[], title: string) {
   lightboxImg.value = { srcs, idx: 0, title };
@@ -29,7 +31,11 @@ function lightboxNext() {
 function lightboxPrev() {
   if (!lightboxImg.value) return;
   const { srcs, title, idx } = lightboxImg.value;
-  lightboxImg.value = { srcs, title, idx: (idx - 1 + srcs.length) % srcs.length };
+  lightboxImg.value = {
+    srcs,
+    title,
+    idx: (idx - 1 + srcs.length) % srcs.length,
+  };
 }
 function handleKey(e: KeyboardEvent) {
   if (e.key === "Escape") closeLightbox();
@@ -43,9 +49,11 @@ const selectedYear = ref(new Date().getFullYear().toString());
 const activityLoading = ref(true);
 
 const availableYears = computed(() =>
-  Object.keys(totals.value).sort((a, b) => Number(b) - Number(a))
+  Object.keys(totals.value).sort((a, b) => Number(b) - Number(a)),
 );
-const contributions = computed(() => allContributions.value[selectedYear.value] ?? []);
+const contributions = computed(
+  () => allContributions.value[selectedYear.value] ?? [],
+);
 const weeks = computed(() => {
   const result: Contribution[][] = [];
   for (let i = 0; i < contributions.value.length; i += 7)
@@ -67,17 +75,38 @@ const monthLabels = computed(() => {
 
 function levelColor(level: number): string {
   return (
-    ["bg-neutral-100", "bg-violet-100", "bg-violet-300", "bg-violet-500", "bg-violet-700"][
-      level
-    ] ?? "bg-neutral-100"
+    [
+      "bg-neutral-100",
+      "bg-violet-100",
+      "bg-violet-300",
+      "bg-violet-500",
+      "bg-violet-700",
+    ][level] ?? "bg-neutral-100"
   );
 }
 
 // ── Marquee items ──────────────────────────────────────────────────────────
 const marqueeItems = [
-  "HTML5", "CSS3", "JavaScript", "TypeScript", "Vue.js", "Laravel", "PHP",
-  "Node.js", "Express", "Prisma", "PostgreSQL", "MySQL", "Docker",
-  "Linux", "Nginx", "Git", "WordPress", "Tailwind CSS", "Electron", "GitHub Actions",
+  "HTML5",
+  "CSS3",
+  "JavaScript",
+  "TypeScript",
+  "Vue.js",
+  "Laravel",
+  "PHP",
+  "Node.js",
+  "Express",
+  "Prisma",
+  "PostgreSQL",
+  "MySQL",
+  "Docker",
+  "Linux",
+  "Nginx",
+  "Git",
+  "WordPress",
+  "Tailwind CSS",
+  "Electron",
+  "GitHub Actions",
 ];
 
 // ── Data ───────────────────────────────────────────────────────────────────
@@ -104,7 +133,7 @@ const projects = [
     title: "cs2-WeaponPaints",
     desc: "Custom weapon skin configuration plugin for Counter-Strike 2 servers.",
     tech: ["C#", "CS2", "CounterStrikeSharp"],
-    url: "https://github.com/imkaiwhyask/cs2-WeaponPaints",
+    url: "https://github.com/Nereziel/cs2-WeaponPaints",
   },
   {
     title: "crest",
@@ -115,7 +144,15 @@ const projects = [
   {
     title: "helpIT",
     desc: "Full-stack IT helpdesk system — ticket management, SLA tracking, role-based access, self-service portal and knowledge base.",
-    tech: ["Vue 3", "Pinia", "Node.js", "Express", "Prisma", "PostgreSQL", "Docker"],
+    tech: [
+      "Vue 3",
+      "Pinia",
+      "Node.js",
+      "Express",
+      "Prisma",
+      "PostgreSQL",
+      "Docker",
+    ],
     url: "https://github.com/imkaiwhyask/helpIT",
   },
 ];
@@ -186,7 +223,15 @@ const clientWork = [
 const stack = [
   {
     category: "Frontend",
-    items: ["HTML5", "CSS3", "JavaScript", "Vue.js", "Bootstrap", "Blade", "ApexCharts"],
+    items: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Vue.js",
+      "Bootstrap",
+      "Blade",
+      "ApexCharts",
+    ],
   },
   {
     category: "Backend / Apps",
@@ -194,11 +239,26 @@ const stack = [
   },
   {
     category: "CMS / No-Code",
-    items: ["WordPress", "Elementor", "WooCommerce", "Power Apps", "Power Automate"],
+    items: [
+      "WordPress",
+      "Elementor",
+      "WooCommerce",
+      "Power Apps",
+      "Power Automate",
+    ],
   },
   {
     category: "Infra & Systems",
-    items: ["Linux", "Windows Server", "Active Directory", "Microsoft 365", "VMware", "FortiGate", "Wazuh", "Grafana"],
+    items: [
+      "Linux",
+      "Windows Server",
+      "Active Directory",
+      "Microsoft 365",
+      "VMware",
+      "FortiGate",
+      "Wazuh",
+      "Grafana",
+    ],
   },
   {
     category: "Containers & DevOps",
@@ -217,43 +277,84 @@ onMounted(async () => {
   // ── Custom cursor ────────────────────────────────────────────────────────
   const hasHover = window.matchMedia("(hover: hover)").matches;
   if (hasHover && cursorDot.value && cursorRing.value) {
-    gsap.set([cursorDot.value, cursorRing.value], { xPercent: -50, yPercent: -50, opacity: 0 });
+    gsap.set([cursorDot.value, cursorRing.value], {
+      xPercent: -50,
+      yPercent: -50,
+      opacity: 0,
+    });
 
-    const xDot = gsap.quickTo(cursorDot.value, "x", { duration: 0.1, ease: "power3" });
-    const yDot = gsap.quickTo(cursorDot.value, "y", { duration: 0.1, ease: "power3" });
-    const xRing = gsap.quickTo(cursorRing.value, "x", { duration: 0.55, ease: "power3" });
-    const yRing = gsap.quickTo(cursorRing.value, "y", { duration: 0.55, ease: "power3" });
+    const xDot = gsap.quickTo(cursorDot.value, "x", {
+      duration: 0.1,
+      ease: "power3",
+    });
+    const yDot = gsap.quickTo(cursorDot.value, "y", {
+      duration: 0.1,
+      ease: "power3",
+    });
+    const xRing = gsap.quickTo(cursorRing.value, "x", {
+      duration: 0.55,
+      ease: "power3",
+    });
+    const yRing = gsap.quickTo(cursorRing.value, "y", {
+      duration: 0.55,
+      ease: "power3",
+    });
 
     let visible = false;
     const onMove = (e: MouseEvent) => {
-      xDot(e.clientX); yDot(e.clientY);
-      xRing(e.clientX); yRing(e.clientY);
+      xDot(e.clientX);
+      yDot(e.clientY);
+      xRing(e.clientX);
+      yRing(e.clientY);
       if (!visible) {
         visible = true;
-        gsap.to([cursorDot.value, cursorRing.value], { opacity: 1, duration: 0.4 });
+        gsap.to([cursorDot.value, cursorRing.value], {
+          opacity: 1,
+          duration: 0.4,
+        });
       }
     };
     window.addEventListener("mousemove", onMove);
     _cleanups.push(() => window.removeEventListener("mousemove", onMove));
 
     const onEnter = () => {
-      gsap.to(cursorDot.value, { scale: 0, duration: 0.25, ease: "power2.out" });
-      gsap.to(cursorRing.value, { scale: 2, borderColor: "#7C3AED", opacity: 0.8, duration: 0.3, ease: "power2.out" });
+      gsap.to(cursorDot.value, {
+        scale: 0,
+        duration: 0.25,
+        ease: "power2.out",
+      });
+      gsap.to(cursorRing.value, {
+        scale: 2,
+        borderColor: "#7C3AED",
+        opacity: 0.8,
+        duration: 0.3,
+        ease: "power2.out",
+      });
     };
     const onLeave = () => {
-      gsap.to(cursorDot.value, { scale: 1, duration: 0.25, ease: "power2.out" });
-      gsap.to(cursorRing.value, { scale: 1, borderColor: "rgba(17,17,17,0.4)", opacity: 1, duration: 0.3, ease: "power2.out" });
+      gsap.to(cursorDot.value, {
+        scale: 1,
+        duration: 0.25,
+        ease: "power2.out",
+      });
+      gsap.to(cursorRing.value, {
+        scale: 1,
+        borderColor: "rgba(17,17,17,0.4)",
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      });
     };
     const interactives = document.querySelectorAll("a, button");
-    interactives.forEach(el => {
+    interactives.forEach((el) => {
       el.addEventListener("mouseenter", onEnter);
       el.addEventListener("mouseleave", onLeave);
     });
     _cleanups.push(() =>
-      interactives.forEach(el => {
+      interactives.forEach((el) => {
         el.removeEventListener("mouseenter", onEnter);
         el.removeEventListener("mouseleave", onLeave);
-      })
+      }),
     );
   }
 
@@ -267,7 +368,8 @@ onMounted(async () => {
 
   // ── Nav ──────────────────────────────────────────────────────────────────
   gsap.from(".nav-item", {
-    y: -24, opacity: 0,
+    y: -24,
+    opacity: 0,
     duration: 0.6,
     stagger: 0.07,
     ease: "power3.out",
@@ -284,7 +386,8 @@ onMounted(async () => {
   });
 
   gsap.from(".hero-meta", {
-    y: 20, opacity: 0,
+    y: 20,
+    opacity: 0,
     duration: 0.7,
     stagger: 0.1,
     ease: "power3.out",
@@ -293,7 +396,9 @@ onMounted(async () => {
 
   // ── Marquee ──────────────────────────────────────────────────────────────
   requestAnimationFrame(() => {
-    const inner = document.querySelector(".marquee-inner") as HTMLElement | null;
+    const inner = document.querySelector(
+      ".marquee-inner",
+    ) as HTMLElement | null;
     if (inner) {
       gsap.to(".marquee-track", {
         x: -inner.offsetWidth,
@@ -312,83 +417,101 @@ onMounted(async () => {
     selector: string,
     fromVars: gsap.TweenVars,
     stagger = 0,
-    toExtra: gsap.TweenVars = {}
+    toExtra: gsap.TweenVars = {},
   ) => {
     const els = [...document.querySelectorAll<HTMLElement>(selector)];
     if (!els.length) return;
     gsap.set(els, fromVars);
     const io = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter(e => e.isIntersecting);
+        const visible = entries.filter((e) => e.isIntersecting);
         visible.forEach((entry, i) => {
           gsap.to(entry.target, {
-            opacity: 1, x: 0, y: 0, scale: 1,
-            duration: 0.75, ease: "power3.out",
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            ease: "power3.out",
             delay: i * stagger,
             ...toExtra,
           });
           io.unobserve(entry.target);
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
-    els.forEach(el => io.observe(el));
+    els.forEach((el) => io.observe(el));
     _cleanups.push(() => io.disconnect());
   };
 
   // About
   reveal(".about-eyebrow", { opacity: 0, y: 20 });
-  reveal(".about-title",   { opacity: 0, y: 60 }, 0, { duration: 1 });
-  reveal(".about-body p",  { opacity: 0, y: 30 }, 0.15);
+  reveal(".about-title", { opacity: 0, y: 60 }, 0, { duration: 1 });
+  reveal(".about-body p", { opacity: 0, y: 30 }, 0.15);
 
   // Stack
   reveal(".skills-eyebrow", { opacity: 0, y: 20 });
-  reveal(".skill-group",    { opacity: 0, x: -30 }, 0.1);
+  reveal(".skill-group", { opacity: 0, x: -30 }, 0.1);
 
   // Work
   reveal(".work-eyebrow", { opacity: 0, y: 20 });
-  reveal(".work-title",   { opacity: 0, y: 30 });
-  reveal(".work-gh",      { opacity: 0, y: 20 });
+  reveal(".work-title", { opacity: 0, y: 30 });
+  reveal(".work-gh", { opacity: 0, y: 20 });
   reveal(".project-card", { opacity: 0, y: 50 }, 0.09);
 
   // Card lift on hover (GSAP — fine for interactions)
-  document.querySelectorAll<HTMLElement>(".project-card").forEach(card => {
-    card.addEventListener("mouseenter", () => gsap.to(card, { y: -6, duration: 0.3, ease: "power2.out" }));
-    card.addEventListener("mouseleave", () => gsap.to(card, { y: 0,  duration: 0.4, ease: "power2.out" }));
+  document.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
+    card.addEventListener("mouseenter", () =>
+      gsap.to(card, { y: -6, duration: 0.3, ease: "power2.out" }),
+    );
+    card.addEventListener("mouseleave", () =>
+      gsap.to(card, { y: 0, duration: 0.4, ease: "power2.out" }),
+    );
   });
 
   // Shipped
   reveal(".shipped-eyebrow", { opacity: 0, y: 20 });
-  reveal(".shipped-title",   { opacity: 0, y: 30 });
-  reveal(".shipped-card",    { opacity: 0, y: 40 }, 0.07);
+  reveal(".shipped-title", { opacity: 0, y: 30 });
+  reveal(".shipped-card", { opacity: 0, y: 40 }, 0.07);
 
   // Activity
   reveal(".activity-header", { opacity: 0, y: 30 });
 
   // Contact — lines use mask reveal (y only, overflow-hidden parent clips them)
   // IO with threshold:0 fires as soon as 1px of the layout box is in view
-  const contactLines = [...document.querySelectorAll<HTMLElement>(".contact-line")];
+  const contactLines = [
+    ...document.querySelectorAll<HTMLElement>(".contact-line"),
+  ];
   if (contactLines.length) {
     gsap.set(contactLines, { y: 90 });
-    const cio = new IntersectionObserver(entries => {
-      const visible = entries.filter(e => e.isIntersecting);
-      visible.forEach((entry, i) => {
-        gsap.to(entry.target, { y: 0, duration: 1.1, delay: i * 0.12, ease: "power4.out" });
-        cio.unobserve(entry.target);
-      });
-    }, { threshold: 0 });
-    contactLines.forEach(el => cio.observe(el));
+    const cio = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        visible.forEach((entry, i) => {
+          gsap.to(entry.target, {
+            y: 0,
+            duration: 1.1,
+            delay: i * 0.12,
+            ease: "power4.out",
+          });
+          cio.unobserve(entry.target);
+        });
+      },
+      { threshold: 0 },
+    );
+    contactLines.forEach((el) => cio.observe(el));
     _cleanups.push(() => cio.disconnect());
   }
   reveal(".contact-sub", { opacity: 0, y: 20 });
   reveal(".contact-btn", { opacity: 0, y: 20 }, 0.1);
 
-  _cleanups.push(() => ScrollTrigger.getAll().forEach(t => t.kill()));
+  _cleanups.push(() => ScrollTrigger.getAll().forEach((t) => t.kill()));
 
   // ── GitHub fetch ─────────────────────────────────────────────────────────
   try {
     const res = await fetch(
-      "https://github-contributions-api.jogruber.de/v4/imkaiwhyask?y=all"
+      "https://github-contributions-api.jogruber.de/v4/imkaiwhyask?y=all",
     );
     const data = await res.json();
     totals.value = data.total ?? {};
@@ -409,7 +532,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  _cleanups.forEach(fn => fn());
+  _cleanups.forEach((fn) => fn());
   _cleanups.length = 0;
 });
 </script>
@@ -423,22 +546,33 @@ onUnmounted(() => {
   <div ref="cursorRing" class="cursor-ring" />
 
   <div class="min-h-screen bg-cream text-[#111111]">
-
     <!-- ── Nav ────────────────────────────────────────────────────────────── -->
-    <nav class="fixed inset-x-0 top-0 z-50 bg-cream/90 backdrop-blur-xl border-b border-neutral-200">
-      <div class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex justify-between items-center">
-        <span class="nav-item font-mono text-sm font-medium text-[#111111]">kai.</span>
+    <nav
+      class="fixed inset-x-0 top-0 z-50 bg-cream/90 backdrop-blur-xl border-b border-neutral-200"
+    >
+      <div
+        class="max-w-7xl mx-auto px-6 md:px-12 h-16 flex justify-between items-center"
+      >
+        <span class="nav-item font-mono text-sm font-medium text-[#111111]"
+          >kai.</span
+        >
         <div class="flex items-center gap-1">
-          <a href="#about"
-            class="nav-item px-4 py-2 text-sm text-neutral-600 hover:text-[#111111] hover:bg-neutral-100 rounded-full transition-all duration-200">
+          <a
+            href="#about"
+            class="nav-item px-4 py-2 text-sm text-neutral-600 hover:text-[#111111] hover:bg-neutral-100 rounded-full transition-all duration-200"
+          >
             About
           </a>
-          <a href="#work"
-            class="nav-item px-4 py-2 text-sm text-neutral-600 hover:text-[#111111] hover:bg-neutral-100 rounded-full transition-all duration-200">
+          <a
+            href="#work"
+            class="nav-item px-4 py-2 text-sm text-neutral-600 hover:text-[#111111] hover:bg-neutral-100 rounded-full transition-all duration-200"
+          >
             Work
           </a>
-          <a href="#contact"
-            class="nav-item ml-2 px-5 py-2 bg-[#111111] text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-all duration-200">
+          <a
+            href="#contact"
+            class="nav-item ml-2 px-5 py-2 bg-[#111111] text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-all duration-200"
+          >
             Let's talk →
           </a>
         </div>
@@ -446,15 +580,23 @@ onUnmounted(() => {
     </nav>
 
     <!-- ── Hero ───────────────────────────────────────────────────────────── -->
-    <section class="relative min-h-dvh flex flex-col justify-end px-6 md:px-12 pt-24 pb-20 overflow-hidden">
+    <section
+      class="relative min-h-dvh flex flex-col justify-end px-6 md:px-12 pt-24 pb-20 overflow-hidden"
+    >
       <!-- Violet glow blob -->
-      <div class="absolute top-1/4 -right-32 w-[700px] h-[700px] rounded-full bg-violet-100/60 blur-[140px] pointer-events-none" />
-      <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-neutral-200/50 blur-[80px] pointer-events-none" />
+      <div
+        class="absolute top-1/4 -right-32 w-[700px] h-[700px] rounded-full bg-violet-100/60 blur-[140px] pointer-events-none"
+      />
+      <div
+        class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-neutral-200/50 blur-[80px] pointer-events-none"
+      />
 
       <div class="relative z-10 max-w-7xl mx-auto w-full">
         <!-- Eyebrow -->
         <div class="overflow-hidden mb-6">
-          <p class="hero-line font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase">
+          <p
+            class="hero-line font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase"
+          >
             01 — Hello, I'm Kai Angelo
           </p>
         </div>
@@ -462,20 +604,26 @@ onUnmounted(() => {
         <!-- Display type -->
         <div class="mb-10 space-y-0">
           <div class="overflow-hidden">
-            <h1 class="hero-line font-black leading-none tracking-tight text-[#111111]"
-              style="font-size: clamp(58px, 11vw, 148px)">
+            <h1
+              class="hero-line font-black leading-none tracking-tight text-[#111111]"
+              style="font-size: clamp(58px, 11vw, 148px)"
+            >
               Full-stack
             </h1>
           </div>
           <div class="overflow-hidden">
-            <h1 class="hero-line font-black leading-none tracking-tight text-violet-600"
-              style="font-size: clamp(58px, 11vw, 148px)">
+            <h1
+              class="hero-line font-black leading-none tracking-tight text-violet-600"
+              style="font-size: clamp(58px, 11vw, 148px)"
+            >
               developer.
             </h1>
           </div>
           <div class="overflow-hidden mt-2">
-            <p class="hero-line font-light leading-none tracking-tight text-neutral-400"
-              style="font-size: clamp(26px, 4.5vw, 60px)">
+            <p
+              class="hero-line font-light leading-none tracking-tight text-neutral-400"
+              style="font-size: clamp(26px, 4.5vw, 60px)"
+            >
               I build things that work.
             </p>
           </div>
@@ -484,27 +632,40 @@ onUnmounted(() => {
         <!-- Meta row -->
         <div class="flex flex-wrap items-center gap-4">
           <div
-            class="hero-meta inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-700 text-xs font-medium">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            class="hero-meta inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-700 text-xs font-medium"
+          >
+            <span
+              class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+            />
             Available for work
           </div>
-          <a href="#work"
-            class="hero-meta group inline-flex items-center gap-2 px-6 py-2.5 bg-[#111111] text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-all duration-200">
+          <a
+            href="#work"
+            class="hero-meta group inline-flex items-center gap-2 px-6 py-2.5 bg-[#111111] text-white text-sm font-medium rounded-full hover:bg-neutral-800 transition-all duration-200"
+          >
             See My Work
             <ArrowUpRight
-              class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+              class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+            />
           </a>
-          <a href="#contact"
-            class="hero-meta inline-flex items-center px-6 py-2.5 border border-neutral-300 text-neutral-700 text-sm font-medium rounded-full hover:bg-white hover:border-neutral-400 transition-all duration-200">
+          <a
+            href="#contact"
+            class="hero-meta inline-flex items-center px-6 py-2.5 border border-neutral-300 text-neutral-700 text-sm font-medium rounded-full hover:bg-white hover:border-neutral-400 transition-all duration-200"
+          >
             Get in Touch
           </a>
         </div>
       </div>
 
       <!-- Scroll hint -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2">
+      <div
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
+      >
         <div class="w-[1px] h-12 bg-neutral-300" />
-        <span class="font-mono text-[10px] text-neutral-400 tracking-widest uppercase">scroll</span>
+        <span
+          class="font-mono text-[10px] text-neutral-400 tracking-widest uppercase"
+          >scroll</span
+        >
       </div>
     </section>
 
@@ -514,13 +675,20 @@ onUnmounted(() => {
         <!-- Two identical rows for seamless loop -->
         <div class="marquee-inner flex items-center shrink-0">
           <template v-for="item in marqueeItems" :key="'a-' + item">
-            <span class="font-mono text-sm text-neutral-400 px-7 shrink-0">{{ item }}</span>
+            <span class="font-mono text-sm text-neutral-400 px-7 shrink-0">{{
+              item
+            }}</span>
             <span class="w-1 h-1 rounded-full bg-violet-400 shrink-0" />
           </template>
         </div>
-        <div class="marquee-inner flex items-center shrink-0" aria-hidden="true">
+        <div
+          class="marquee-inner flex items-center shrink-0"
+          aria-hidden="true"
+        >
           <template v-for="item in marqueeItems" :key="'b-' + item">
-            <span class="font-mono text-sm text-neutral-400 px-7 shrink-0">{{ item }}</span>
+            <span class="font-mono text-sm text-neutral-400 px-7 shrink-0">{{
+              item
+            }}</span>
             <span class="w-1 h-1 rounded-full bg-violet-400 shrink-0" />
           </template>
         </div>
@@ -528,47 +696,64 @@ onUnmounted(() => {
     </div>
 
     <!-- ── About ──────────────────────────────────────────────────────────── -->
-    <section id="about" class="py-32 px-6 md:px-12 bg-white border-b border-neutral-200">
+    <section
+      id="about"
+      class="py-32 px-6 md:px-12 bg-white border-b border-neutral-200"
+    >
       <div class="max-w-7xl mx-auto">
-        <p class="about-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-20">
+        <p
+          class="about-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-20"
+        >
           02 — About
         </p>
         <h2
-          class="about-title text-5xl md:text-7xl font-light tracking-tight leading-[1.1] mb-24 max-w-5xl text-[#111111]">
+          class="about-title text-5xl md:text-7xl font-light tracking-tight leading-[1.1] mb-24 max-w-5xl text-[#111111]"
+        >
           I turn complexity<br />
           <em class="not-italic text-violet-600">into clarity.</em>
         </h2>
-        <div class="about-body grid md:grid-cols-2 gap-12 text-neutral-500 leading-relaxed text-lg">
+        <div
+          class="about-body grid md:grid-cols-2 gap-12 text-neutral-500 leading-relaxed text-lg"
+        >
           <p>
-            I build full-stack applications and manage infrastructure. My focus is creating internal
-            tools that are reliable, simple, and actually used by people.
+            I build full-stack applications and manage infrastructure. My focus
+            is creating internal tools that are reliable, simple, and actually
+            used by people.
           </p>
           <p>
-            I enjoy solving real problems — whether it's approval workflows, ticketing platforms,
-            or improving operations through clean code and solid architecture.
+            I enjoy solving real problems — whether it's approval workflows,
+            ticketing platforms, or improving operations through clean code and
+            solid architecture.
           </p>
         </div>
       </div>
     </section>
 
     <!-- ── Stack ──────────────────────────────────────────────────────────── -->
-    <section id="skills" class="py-32 px-6 md:px-12 bg-cream border-b border-neutral-200">
+    <section
+      id="skills"
+      class="py-32 px-6 md:px-12 bg-cream border-b border-neutral-200"
+    >
       <div class="max-w-7xl mx-auto">
-        <p class="skills-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-20">
+        <p
+          class="skills-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-20"
+        >
           03 — Stack
         </p>
         <div class="space-y-12">
           <div v-for="group in stack" :key="group.category" class="skill-group">
-            <p class="text-xs font-mono text-neutral-400 tracking-[0.15em] uppercase mb-4">
+            <p
+              class="text-xs font-mono text-neutral-400 tracking-[0.15em] uppercase mb-4"
+            >
               {{ group.category }}
             </p>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="item in group.items"
                 :key="item"
-                class="px-4 py-2 bg-white border border-neutral-200 rounded-full text-sm font-mono text-neutral-700
-                       hover:border-violet-300 hover:text-violet-700 hover:bg-violet-50 transition-all duration-200 cursor-default"
-              >{{ item }}</span>
+                class="px-4 py-2 bg-white border border-neutral-200 rounded-full text-sm font-mono text-neutral-700 hover:border-violet-300 hover:text-violet-700 hover:bg-violet-50 transition-all duration-200 cursor-default"
+                >{{ item }}</span
+              >
             </div>
           </div>
         </div>
@@ -576,14 +761,21 @@ onUnmounted(() => {
     </section>
 
     <!-- ── Work ───────────────────────────────────────────────────────────── -->
-    <section id="work" class="py-32 px-6 md:px-12 bg-white border-b border-neutral-200">
+    <section
+      id="work"
+      class="py-32 px-6 md:px-12 bg-white border-b border-neutral-200"
+    >
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end justify-between mb-16">
           <div>
-            <p class="work-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4">
+            <p
+              class="work-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4"
+            >
               04 — Work
             </p>
-            <h2 class="work-title text-4xl md:text-5xl font-light tracking-tight">
+            <h2
+              class="work-title text-4xl md:text-5xl font-light tracking-tight"
+            >
               Selected Projects
             </h2>
           </div>
@@ -604,7 +796,9 @@ onUnmounted(() => {
           >
             <div class="p-7">
               <div class="flex items-start justify-between mb-5">
-                <h3 class="font-mono font-medium text-lg">{{ project.title }}</h3>
+                <h3 class="font-mono font-medium text-lg">
+                  {{ project.title }}
+                </h3>
                 <a
                   :href="project.url"
                   target="_blank"
@@ -613,13 +807,16 @@ onUnmounted(() => {
                   <ArrowUpRight class="w-4 h-4" />
                 </a>
               </div>
-              <p class="text-neutral-500 text-sm leading-relaxed mb-6">{{ project.desc }}</p>
+              <p class="text-neutral-500 text-sm leading-relaxed mb-6">
+                {{ project.desc }}
+              </p>
               <div class="flex flex-wrap gap-2">
                 <span
                   v-for="tech in project.tech"
                   :key="tech"
                   class="px-3 py-1 bg-violet-50 text-violet-700 rounded-full text-xs font-medium border border-violet-100"
-                >{{ tech }}</span>
+                  >{{ tech }}</span
+                >
               </div>
             </div>
           </div>
@@ -628,7 +825,9 @@ onUnmounted(() => {
           <div
             class="project-card border-2 border-dashed border-neutral-200 rounded-2xl p-7 flex flex-col items-center justify-center text-center min-h-[200px]"
           >
-            <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center mb-3">
+            <div
+              class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center mb-3"
+            >
               <Clock class="w-4 h-4 text-neutral-400" />
             </div>
             <p class="text-sm font-medium text-neutral-400 mb-1">More coming</p>
@@ -639,12 +838,18 @@ onUnmounted(() => {
     </section>
 
     <!-- ── Shipped Projects ────────────────────────────────────────────────── -->
-    <section class="shipped-section py-32 px-6 md:px-12 bg-cream border-b border-neutral-200">
+    <section
+      class="shipped-section py-32 px-6 md:px-12 bg-cream border-b border-neutral-200"
+    >
       <div class="max-w-7xl mx-auto">
-        <p class="shipped-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4">
+        <p
+          class="shipped-eyebrow font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4"
+        >
           04.2 — Shipped
         </p>
-        <h2 class="shipped-title text-4xl md:text-5xl font-light tracking-tight mb-16">
+        <h2
+          class="shipped-title text-4xl md:text-5xl font-light tracking-tight mb-16"
+        >
           Shipped Projects
         </h2>
 
@@ -652,8 +857,7 @@ onUnmounted(() => {
           <div
             v-for="client in clientWork"
             :key="client.title"
-            class="shipped-card group bg-white border border-neutral-200 rounded-xl overflow-hidden cursor-zoom-in
-                   hover:border-violet-200 hover:shadow-lg transition-all duration-300"
+            class="shipped-card group bg-white border border-neutral-200 rounded-xl overflow-hidden cursor-zoom-in hover:border-violet-200 hover:shadow-lg transition-all duration-300"
             @click="openLightbox(client.imgs, client.title)"
           >
             <div class="relative h-44 overflow-hidden bg-neutral-50">
@@ -671,13 +875,16 @@ onUnmounted(() => {
             </div>
             <div class="p-4">
               <h3 class="font-medium text-sm mb-1.5">{{ client.title }}</h3>
-              <p class="text-neutral-500 text-xs leading-relaxed mb-3">{{ client.desc }}</p>
+              <p class="text-neutral-500 text-xs leading-relaxed mb-3">
+                {{ client.desc }}
+              </p>
               <div class="flex flex-wrap gap-1.5">
                 <span
                   v-for="tech in client.tech"
                   :key="tech"
                   class="px-2.5 py-1 bg-neutral-100 text-neutral-600 rounded-full text-[10px] font-medium"
-                >{{ tech }}</span>
+                  >{{ tech }}</span
+                >
               </div>
             </div>
           </div>
@@ -689,12 +896,20 @@ onUnmounted(() => {
     <section class="py-24 px-6 md:px-12 bg-white border-b border-neutral-200">
       <div class="max-w-7xl mx-auto">
         <div class="activity-header mb-10">
-          <p class="font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4">Activity</p>
-          <h2 class="text-3xl font-light tracking-tight">GitHub Contributions</h2>
+          <p
+            class="font-mono text-xs text-neutral-400 tracking-[0.2em] uppercase mb-4"
+          >
+            Activity
+          </p>
+          <h2 class="text-3xl font-light tracking-tight">
+            GitHub Contributions
+          </h2>
         </div>
 
         <div v-if="activityLoading" class="h-28 flex items-center">
-          <span class="font-mono text-xs text-neutral-400 animate-pulse">fetching activity...</span>
+          <span class="font-mono text-xs text-neutral-400 animate-pulse"
+            >fetching activity...</span
+          >
         </div>
 
         <div
@@ -707,15 +922,20 @@ onUnmounted(() => {
                 v-for="year in availableYears"
                 :key="year"
                 @click="selectedYear = year"
-                :class="selectedYear === year
-                  ? 'bg-violet-600 text-white border-violet-600'
-                  : 'border-neutral-200 text-neutral-500 hover:border-neutral-300 hover:text-[#111111]'"
+                :class="
+                  selectedYear === year
+                    ? 'bg-violet-600 text-white border-violet-600'
+                    : 'border-neutral-200 text-neutral-500 hover:border-neutral-300 hover:text-[#111111]'
+                "
                 class="px-3 py-1 rounded-full border text-xs font-medium transition-all duration-200"
               >
                 {{ year }}
               </button>
             </div>
-            <span v-if="totals[selectedYear]" class="font-mono text-xs text-neutral-400">
+            <span
+              v-if="totals[selectedYear]"
+              class="font-mono text-xs text-neutral-400"
+            >
               {{ totals[selectedYear].toLocaleString() }} contributions
             </span>
           </div>
@@ -724,16 +944,25 @@ onUnmounted(() => {
             <div class="min-w-max">
               <div class="relative h-5 mb-1">
                 <div class="flex gap-1">
-                  <div v-for="(_, wi) in weeks" :key="wi" class="w-3 shrink-0 relative">
+                  <div
+                    v-for="(_, wi) in weeks"
+                    :key="wi"
+                    class="w-3 shrink-0 relative"
+                  >
                     <span
-                      v-if="monthLabels.find(m => m.col === wi)"
+                      v-if="monthLabels.find((m) => m.col === wi)"
                       class="absolute left-0 font-mono text-[10px] text-neutral-400 whitespace-nowrap"
-                    >{{ monthLabels.find(m => m.col === wi)?.label }}</span>
+                      >{{ monthLabels.find((m) => m.col === wi)?.label }}</span
+                    >
                   </div>
                 </div>
               </div>
               <div class="flex gap-1 pb-3">
-                <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col gap-1">
+                <div
+                  v-for="(week, wi) in weeks"
+                  :key="wi"
+                  class="flex flex-col gap-1"
+                >
                   <div
                     v-for="day in week"
                     :key="day.date"
@@ -748,7 +977,12 @@ onUnmounted(() => {
 
           <div class="flex items-center justify-end gap-1.5 mt-1">
             <span class="font-mono text-[10px] text-neutral-400">less</span>
-            <div v-for="l in [0, 1, 2, 3, 4]" :key="l" :class="levelColor(l)" class="w-3 h-3 rounded-sm" />
+            <div
+              v-for="l in [0, 1, 2, 3, 4]"
+              :key="l"
+              :class="levelColor(l)"
+              class="w-3 h-3 rounded-sm"
+            />
             <span class="font-mono text-[10px] text-neutral-400">more</span>
           </div>
         </div>
@@ -756,29 +990,48 @@ onUnmounted(() => {
     </section>
 
     <!-- ── Contact ────────────────────────────────────────────────────────── -->
-    <section id="contact" class="py-40 px-6 md:px-12 bg-[#0F0F0F] overflow-hidden">
+    <section
+      id="contact"
+      class="py-40 px-6 md:px-12 bg-[#0F0F0F] overflow-hidden"
+    >
       <div class="max-w-7xl mx-auto">
-        <p class="font-mono text-xs text-neutral-600 tracking-[0.2em] uppercase mb-20">
+        <p
+          class="font-mono text-xs text-neutral-600 tracking-[0.2em] uppercase mb-20"
+        >
           05 — Contact
         </p>
 
         <!-- Text mask reveal -->
         <div class="mb-16">
           <div class="overflow-hidden">
-            <h2 class="contact-line font-black leading-none tracking-tight text-white"
-              style="font-size: clamp(52px, 9.5vw, 130px)">Let's build</h2>
+            <h2
+              class="contact-line font-black leading-none tracking-tight text-white"
+              style="font-size: clamp(52px, 9.5vw, 130px)"
+            >
+              Let's build
+            </h2>
           </div>
           <div class="overflow-hidden">
-            <h2 class="contact-line font-black leading-none tracking-tight text-violet-400"
-              style="font-size: clamp(52px, 9.5vw, 130px)">something</h2>
+            <h2
+              class="contact-line font-black leading-none tracking-tight text-violet-400"
+              style="font-size: clamp(52px, 9.5vw, 130px)"
+            >
+              something
+            </h2>
           </div>
           <div class="overflow-hidden">
-            <h2 class="contact-line font-black leading-none tracking-tight text-white"
-              style="font-size: clamp(52px, 9.5vw, 130px)">great.</h2>
+            <h2
+              class="contact-line font-black leading-none tracking-tight text-white"
+              style="font-size: clamp(52px, 9.5vw, 130px)"
+            >
+              great.
+            </h2>
           </div>
         </div>
 
-        <p class="contact-sub text-neutral-400 text-lg mb-12 max-w-lg leading-relaxed">
+        <p
+          class="contact-sub text-neutral-400 text-lg mb-12 max-w-lg leading-relaxed"
+        >
           Open to freelance, contracts, and interesting problems.
         </p>
 
@@ -809,7 +1062,9 @@ onUnmounted(() => {
 
     <!-- ── Footer ─────────────────────────────────────────────────────────── -->
     <footer class="bg-[#0F0F0F] border-t border-neutral-800 py-8 px-6 md:px-12">
-      <div class="max-w-7xl mx-auto flex items-center justify-between font-mono text-xs text-neutral-600">
+      <div
+        class="max-w-7xl mx-auto flex items-center justify-between font-mono text-xs text-neutral-600"
+      >
         <span>© 2026 kai angelo — imkaiwhyask</span>
         <div class="flex items-center gap-5">
           <a
@@ -829,7 +1084,6 @@ onUnmounted(() => {
         </div>
       </div>
     </footer>
-
   </div>
 
   <!-- ── Lightbox ───────────────────────────────────────────────────────── -->
@@ -840,34 +1094,48 @@ onUnmounted(() => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
         @click.self="closeLightbox"
       >
-        <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl">
+        <div
+          class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl"
+        >
           <img
             :key="lightboxImg.idx"
             :src="lightboxImg.srcs[lightboxImg.idx]"
             :alt="lightboxImg.title"
             class="w-full"
           />
-          <div class="px-5 py-4 flex items-center justify-between gap-4 border-t border-neutral-100">
-            <p class="font-mono text-xs text-neutral-500 truncate">{{ lightboxImg.title }}</p>
+          <div
+            class="px-5 py-4 flex items-center justify-between gap-4 border-t border-neutral-100"
+          >
+            <p class="font-mono text-xs text-neutral-500 truncate">
+              {{ lightboxImg.title }}
+            </p>
             <template v-if="lightboxImg.srcs.length > 1">
               <div class="flex items-center gap-2 shrink-0">
                 <button
                   @click="lightboxPrev"
                   class="px-4 py-1.5 rounded-full border border-neutral-200 text-xs font-medium hover:bg-neutral-50 transition-all"
-                >← prev</button>
-                <span class="font-mono text-xs text-neutral-400 min-w-[40px] text-center">
+                >
+                  ← prev
+                </button>
+                <span
+                  class="font-mono text-xs text-neutral-400 min-w-[40px] text-center"
+                >
                   {{ lightboxImg.idx + 1 }} / {{ lightboxImg.srcs.length }}
                 </span>
                 <button
                   @click="lightboxNext"
                   class="px-4 py-1.5 rounded-full border border-neutral-200 text-xs font-medium hover:bg-neutral-50 transition-all"
-                >next →</button>
+                >
+                  next →
+                </button>
               </div>
             </template>
             <button
               @click="closeLightbox"
               class="shrink-0 text-xs font-medium text-neutral-400 hover:text-[#111111] transition-colors"
-            >close ×</button>
+            >
+              close ×
+            </button>
           </div>
         </div>
       </div>
