@@ -159,7 +159,7 @@ const projects = [
     title: "mergeIT",
     desc: "Self-hosted PDF toolkit — merge, split, compress, and visually organize PDFs with drag-and-drop. All processing happens on your own server.",
     tech: ["Vue 3", "Node.js", "Express", "Ghostscript", "vue-router"],
-    url: "https://github.com/imkaiwhyask/mergeIT",
+    url: "https://github.com/imkaiwhyask/mergeIT-PDF",
   },
 ];
 
